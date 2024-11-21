@@ -1,4 +1,4 @@
-module FamilyEmo
+module ShoesShop
 
 go 1.23
 

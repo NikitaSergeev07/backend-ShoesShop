@@ -8,9 +8,11 @@ import (
 )
 
 const (
-	usersTable = "users"
-	maxRetries = 10
-	retryDelay = 2 * time.Second
+	UsersTable   = "users"
+	ItemsTable   = "items"
+	ReviewsTable = "reviews"
+	maxRetries   = 10
+	retryDelay   = 2 * time.Second
 )
 
 type Config struct {

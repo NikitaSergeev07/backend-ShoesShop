@@ -1,12 +1,13 @@
 package service
 
 import (
-	"FamilyEmo"
-	"FamilyEmo/pkg/repository"
+	"ShoesShop"
+	"ShoesShop/pkg/repository"
 	"crypto/sha1"
 	"errors"
 	"fmt"
 	"github.com/golang-jwt/jwt"
+	"sync"
 	"time"
 )
 
@@ -22,16 +23,47 @@ type tokenClaims struct {
 }
 
 type AuthService struct {
-	repo repository.Authorization
+	repo           repository.Authorization
+	tokenBlacklist map[string]bool
+	mu             sync.Mutex
 }
 
 func NewAuthService(repo repository.Authorization) *AuthService {
-	return &AuthService{repo: repo}
+	return &AuthService{
+		repo:           repo,
+		tokenBlacklist: make(map[string]bool),
+	}
+
 }
 
-func (s *AuthService) CreateUser(user FamilyEmo.User) (int, error) {
+func (s *AuthService) InvalidateToken(token string) error {
+	s.mu.Lock()
+	defer s.mu.Unlock()
+	s.tokenBlacklist[token] = true
+	return nil
+}
+
+func (s *AuthService) IsTokenBlacklisted(token string) bool {
+	s.mu.Lock()
+	defer s.mu.Unlock()
+	return s.tokenBlacklist[token]
+}
+
+func (s *AuthService) CreateUser(user ShoesShop.User) (int, error) {
 	user.Password = generatePasswordHash(user.Password)
 	return s.repo.CreateUser(user)
+}
+
+func (s *AuthService) GetUser(email, password string) (int, error) {
+	user, err := s.repo.GetUser(email, generatePasswordHash(password))
+	if err != nil {
+		return -1, err
+	}
+	if user.Id == 0 {
+		return -1, errors.New("user ID is empty")
+
+	}
+	return user.Id, nil
 }
 
 func (s *AuthService) GenerateToken(email, password string) (string, error) {
