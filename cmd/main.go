@@ -49,6 +49,7 @@ func main() {
 		AllowCredentials: true,
 	})
 
+	//сервер
 	srv := new(ShoesShop.Server)
 	if err := srv.Run(viper.GetString("port"), corsHandler.Handler(handlers.InitRoutes())); err != nil {
 		logrus.Fatalf("error occurred while running server: %s", err.Error())

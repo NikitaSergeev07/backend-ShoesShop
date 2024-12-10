@@ -7,16 +7,16 @@ COPY go.mod go.sum ./
 RUN go mod download
 
 COPY . .
-RUN go build -o familyemo ./cmd
+RUN go build -o shoesshop ./cmd
 
 FROM alpine:latest
 
 WORKDIR /root/
-COPY --from=builder /app/familyemo .
+COPY --from=builder /app/shoesshop .
 
 COPY configs/config.yml /root/configs/config.yml
 COPY .env /root/.env
 
 EXPOSE 8000
 
-CMD ["./familyemo"]
+CMD ["./shoesshop"]

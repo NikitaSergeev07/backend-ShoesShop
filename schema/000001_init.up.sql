@@ -27,3 +27,18 @@ CREATE TABLE items
     description TEXT NOT NULL,
     image_urls TEXT[]
 );
+
+CREATE TABLE favorites (
+    id SERIAL PRIMARY KEY,
+    user_id INT NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+    item_id INT NOT NULL REFERENCES items(id) ON DELETE CASCADE,
+    UNIQUE (user_id, item_id)
+);
+
+CREATE TABLE carts (
+    id SERIAL PRIMARY KEY,
+    user_id INT REFERENCES users(id),
+    item_id INT REFERENCES items(id),
+    size VARCHAR(10),
+    UNIQUE(user_id, item_id)
+);

@@ -4,6 +4,7 @@ import (
 	"ShoesShop"
 	"ShoesShop/enums"
 	"ShoesShop/pkg/repository"
+	yoopayment "github.com/rvinnie/yookassa-sdk-go/yookassa/payment"
 )
 
 type Authorization interface {
@@ -29,10 +30,30 @@ type Review interface {
 	GetAllReviews() ([]ShoesShop.Review, error)
 }
 
+type Favorite interface {
+	AddFavorite(f ShoesShop.Favorite) (int, error)
+	RemoveFavorite(userId, itemId int) error
+	GetFavoritesByUserId(userId int) ([]ShoesShop.Item, error)
+}
+
+type Cart interface {
+	AddToCart(cart ShoesShop.Cart) (int, error)
+	RemoveFromCart(userId, itemId int, size string) error
+	GetCartByUserId(userId int) ([]ShoesShop.Cart, error)
+	RemoveAll(userId int) error
+}
+
+type Payment interface {
+	CreatePayment(amount, description string) (*yoopayment.Payment, error)
+}
+
 type Service struct {
 	Authorization
 	Item
 	Review
+	Favorite
+	Cart
+	Payment
 }
 
 func NewService(repos *repository.Repository) *Service {
@@ -40,5 +61,8 @@ func NewService(repos *repository.Repository) *Service {
 		Authorization: NewAuthService(repos.Authorization),
 		Item:          NewItemService(repos.ItemRepository),
 		Review:        NewReviewService(repos.ReviewRepository),
+		Favorite:      NewFavoriteService(repos.FavoriteRepository),
+		Cart:          NewCartService(repos.CartRepository),
+		Payment:       NewPaymentService("995752", "test_BonXu0DzzvUyHD7gLcQXETBKW-AOggGeyNvSQwaYZ8U"),
 	}
 }

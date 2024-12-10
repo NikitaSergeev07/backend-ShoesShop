@@ -39,6 +39,23 @@ func (h *Handler) InitRoutes() *gin.Engine {
 			reviews.POST("/", h.createReview)
 			reviews.GET("/", h.getAllReviews)
 		}
+		favorites := api.Group("/favorites")
+		{
+			favorites.GET("/", h.getFavoritesByUser)
+			favorites.POST("/", h.addFavorite)
+			favorites.DELETE("/", h.removeFavorite)
+		}
+		cart := api.Group("/carts")
+		{
+			cart.GET("/", h.getCartByUser)
+			cart.POST("/", h.addToCart)
+			cart.DELETE("/", h.removeFromCart)
+			cart.DELETE("/all", h.removeAllFromCart)
+		}
+		payments := api.Group("/payments")
+		{
+			payments.POST("", h.CreatePayment)
+		}
 	}
 
 	//TEST for JWT

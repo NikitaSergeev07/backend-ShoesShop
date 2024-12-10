@@ -1,7 +1,7 @@
 services:
   db:
     image: postgres:latest
-    container_name: familyemo-db
+    container_name: shoesshop-db
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: ${DB_PASSWORD}
@@ -19,7 +19,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-    container_name: familyemo-app
+    container_name: shoesshop-app
     environment:
       - DB_PASSWORD=${DB_PASSWORD}
     ports:
