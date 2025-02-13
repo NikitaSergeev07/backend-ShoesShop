@@ -6,4 +6,6 @@ const (
 	SortByName SortOption = iota
 	SortByPriceAsc
 	SortByPriceDesc
+	Shoes1
+	Shoes2
 )

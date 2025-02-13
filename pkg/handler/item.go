@@ -46,6 +46,10 @@ func (h *Handler) searchItems(c *gin.Context) {
 		sortEnum = enums.SortByPriceAsc
 	case "price_desc":
 		sortEnum = enums.SortByPriceDesc
+	case "Shoes1":
+		sortEnum = enums.Shoes1
+	case "Shoes2":
+		sortEnum = enums.Shoes2
 	default:
 		newErrorResponse(c, http.StatusBadRequest, "invalid sort parameter")
 		return

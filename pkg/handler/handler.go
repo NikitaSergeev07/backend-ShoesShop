@@ -33,6 +33,7 @@ func (h *Handler) InitRoutes() *gin.Engine {
 			items.PUT("/:id", h.updateItem)
 			items.DELETE("/:id", h.deleteItem)
 			items.GET("/search", h.searchItems)
+			items.PUT("/", h.updateItem)
 		}
 		reviews := api.Group("/reviews")
 		{
@@ -55,6 +56,10 @@ func (h *Handler) InitRoutes() *gin.Engine {
 		payments := api.Group("/payments")
 		{
 			payments.POST("", h.CreatePayment)
+		}
+		feedbacks := api.Group("/feedbacks")
+		{
+			feedbacks.POST("", FeedbackHandlerGin)
 		}
 	}
 

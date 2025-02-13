@@ -25,7 +25,8 @@ CREATE TABLE items
     title VARCHAR(255) NOT NULL,
     price DECIMAL(10, 2) NOT NULL,
     description TEXT NOT NULL,
-    image_urls TEXT[]
+    image_urls TEXT[],
+    category VARCHAR(255)
 );
 
 CREATE TABLE favorites (
@@ -40,5 +41,4 @@ CREATE TABLE carts (
     user_id INT REFERENCES users(id),
     item_id INT REFERENCES items(id),
     size VARCHAR(10),
-    UNIQUE(user_id, item_id)
 );
